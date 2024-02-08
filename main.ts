@@ -120,9 +120,21 @@ class SampleSettingTab extends PluginSettingTab {
 
 		containerEl.empty();
 
+		containerEl.createEl('h2', { text: 'Настройки плагина GigaObsidian'});
+
 		new Setting(containerEl)
 			.setName('Setting #1')
-			.setDesc('It\'s a secret')
+			.setDesc('Настройка 1')
+			.addText(text => text
+				.setPlaceholder('Enter your secret')
+				.setValue(this.plugin.settings.mySetting)
+				.onChange(async (value) => {
+					this.plugin.settings.mySetting = value;
+					await this.plugin.saveSettings();
+				}));
+		new Setting(containerEl)
+			.setName('Setting #2')
+			.setDesc('Настройка 2')
 			.addText(text => text
 				.setPlaceholder('Enter your secret')
 				.setValue(this.plugin.settings.mySetting)
