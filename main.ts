@@ -1,5 +1,5 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
-import { sendToChatGPT } from './gptInteraction';
+
 // Remember to rename these classes and interfaces!
 
 interface MyPluginSettings {
@@ -152,26 +152,6 @@ export default class MyPlugin extends Plugin {
 
 	async saveSettings() {
 		await this.saveData(this.settings);
-	}
-	//мой неработающий код для отслеживания текста и передачи его в chatgpt
-	private addTextSelectionHandler() {
-		this.registerEvent(
-			this.app.workspace.on('selectionChanged', (view, selection) => {
-				// Проверяем, что это MarkdownView
-				if (view instanceof MarkdownView) {
-					// Обработка изменения выделения текста
-					const selectedText = selection;
-					if (selectedText.trim() !== '') {
-						// Отправка текста на обработку модели GPT
-						sendToChatGPT(selectedText)
-							.then((gptResponse) => {
-								// Вставка ответа в редактор заметок
-								view.editor.replaceSelection(gptResponse);
-							});
-					}
-				}
-			})
-		);
 	}
 }
 
