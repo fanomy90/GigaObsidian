@@ -3,7 +3,7 @@
 	"name": "GigaObsidian",
 	"version": "0.0.1",
 	"minAppVersion": "0.15.0",
-	"description": "ChatGpt&GigaChat integrations",
+	"description": "Интеграция ChatGpt в Obsidian",
 	"author": "skiner",
 	"authorUrl": "https://obsidian.md",
 	"fundingUrl": "https://obsidian.md/pricing",
