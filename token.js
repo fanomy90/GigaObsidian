@@ -31,8 +31,8 @@ async function getAccessToken() {
     const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json',
-        'RqUID': '89a05b68-c017-4799-a3a3-2a13acc0aa0f',
-        'Authorization': 'Basic N2NmY2YxOWEtOWJmOS00ZDJkLWI0YTEtNzhkMmI1YTAwNjU1Ojg5YTA1YjY4LWMwMTctNDc5OS1hM2EzLTJhMTNhY2MwYWEwZg==',
+        'RqUID': '',
+        'Authorization': '',
     };
 
     const axiosConfig = {
