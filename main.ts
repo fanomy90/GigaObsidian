@@ -1,5 +1,5 @@
 import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
-
+import { getAccessToken } from './gigachat.js';
 // Remember to rename these classes and interfaces!
 
 interface MyPluginSettings {
@@ -99,6 +99,13 @@ export default class MyPlugin extends Plugin {
 					item.setIcon('Keyboard');
 					item.onClick(async () => {
 						await this.processSelectText();
+					});
+				});
+				menu.addItem((item) => {
+					item.setTitle('Получить токен');
+					item.setIcon('Keyboard');
+					item.onClick(async () => {
+						await getAccessToken();
 					});
 				});
 			})
