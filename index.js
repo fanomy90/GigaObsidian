@@ -1,6 +1,9 @@
-const axios = require('axios');
-const https = require('https');
-const getAccessToken = require('./token'); // Путь к файлу token.js
+//const axios = require('axios');
+import axios from 'axios';
+//const https = require('https');
+import https from 'https';
+//const getAccessToken = require('./token'); // Путь к файлу token.js
+import getAccessToken from './token';
 
 async function sendChatCompletionRequest(accessToken, messageContent) {
     const apiUrl = 'https://gigachat.devices.sberbank.ru/api/v1/chat/completions';
