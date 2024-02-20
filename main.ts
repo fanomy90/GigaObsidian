@@ -1,4 +1,4 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Editor, MarkdownView, Modal, normalizePath, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import axios from 'axios';
 import * as https from 'https';
 //import * as fs from 'fs';
@@ -9,6 +9,9 @@ import * as https from 'https';
 // Remember to rename these classes and interfaces!
 //import Agent from 'https';
 import * as childProcess from 'child_process';
+//import * as path from 'path';
+
+
 
 interface MyPluginSettings {
 	mySetting: string;
@@ -96,13 +99,23 @@ export default class MyPlugin extends Plugin {
 		this.startProxyServer();
 		// Проверяем доступность прокси-сервера при загрузке плагина
         const isProxyServerAvailable = await this.checkProxyServerAvailability();
-
         if (isProxyServerAvailable) {
             console.log('Proxy server is available.');
         } else {
             console.error('Proxy server is not available. Please check your configuration.');
         }
 	}
+	//запускаем прокси сервер
+    startProxyServer() {
+        //const proxyPath = path.resolve('C:\\Users\\skiner\\Documents\\OUTERHEAVEN\\GigaTest1\\.obsidian\\plugins\\GigaTest1\\proxy-server.mjs');
+		//@ts-ignore
+		const proxyPath = normalizePath(`${this.app.vault.adapter.basePath}/${'.obsidian/plugins/GigaTest1/proxy-server.mjs'}`);
+		const proxyProcess = childProcess.spawn('node', [proxyPath]);
+        proxyProcess.on('error', (err) => {
+			console.error('Error starting proxy server:', err);
+        });
+        console.log('Proxy server started successfully!');
+    }
 	// Функция для проверки доступности прокси-сервера
 	async checkProxyServerAvailability(): Promise<boolean> {
 		const proxyUrl = 'http://localhost:3000/api/v2/oauth'; 
@@ -114,20 +127,7 @@ export default class MyPlugin extends Plugin {
 			return false;
 		}
 	}
-	//запускаем прокси сервер
-	startProxyServer() {
-		const proxyPath = 'D:\\proxy-server.js';
-		//const proxyPath = 'C:\\Users\\skiner\\Documents\\OUTERHEAVEN\\GigaTest1\\obsidian\\plugins\\GigaTest1\\proxy-server.mjs';  // Замените на фактический путь
-		const proxyProcess = childProcess.fork(proxyPath);
-	
-		proxyProcess.on('error', (err) => {
-			console.error('Error starting proxy server:', err);
-		});
-	
-		console.log('Proxy server started successfully!');
-	}
-
-
+	//получение токена
 	async getAccessToken() {
 		// Используем URL прокси-сервера вместо API Sberbank
 		const proxyUrl = 'http://localhost:3000/api/v2/oauth'; // Замените на ваш адрес прокси-сервера
@@ -150,8 +150,7 @@ export default class MyPlugin extends Plugin {
 			console.error('Error in getAccessToken:', error);
 		}
 	}
-
-
+	//общение с GigaChat
 
 	addContextMenu() {
 		this.registerEvent(
@@ -180,6 +179,13 @@ export default class MyPlugin extends Plugin {
 							// Если произошла ошибка, выводим её в консоль
 							console.error('Error in getAccessToken:', error);
 						}
+					});
+				});
+				menu.addItem((item) => {
+					item.setTitle('Обработать текст в ChatGPT');
+					item.setIcon('Keyboard');
+					item.onClick(async () => {
+						//await this.processSelectText();
 					});
 				});
 			})
